@@ -19,6 +19,9 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+    if (is.dev) {
+      mainWindow.webContents.openDevTools({ mode: 'bottom' })
+    }
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -38,20 +41,6 @@ function createWindow(): void {
     secondaryWindow?.close()
   })
 
-  // mainWindow.webContents.session.webRequest.onBeforeSendHeaders(
-  //   (details, callback) => {
-  //     callback({ requestHeaders: { Origin: '*', ...details.requestHeaders } });
-  //   },
-  // );
-
-  // mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-  //   callback({
-  //     responseHeaders: {
-  //       'Access-Control-Allow-Origin': ['*'],
-  //       ...details.responseHeaders,
-  //     },
-  //   });
-  // });
 }
 
 let secondaryWindow: BrowserWindow | null
@@ -77,6 +66,9 @@ function createSecondWindow(): void {
 
   secondaryWindow.on('ready-to-show', () => {
     secondaryWindow!.show()
+    if (is.dev) {
+      secondaryWindow!.webContents.openDevTools({ mode: 'bottom' })
+    }
   })
 
   secondaryWindow.on('closed', () => {
@@ -107,6 +99,12 @@ app.whenReady().then(() => {
     } else {
       secondaryWindow.show()
     }
+  })
+
+  ipcMain.on('game-joined', (event, arg) => {
+    console.log('game joined: ', arg)
+    event.sender.send('game-joined-reply', { message: 'hello' })
+    secondaryWindow?.webContents.send('game-joined', arg)
   })
 
   createWindow()

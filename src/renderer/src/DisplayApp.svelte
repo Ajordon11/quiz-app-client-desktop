@@ -1,7 +1,16 @@
 <script lang="ts">
+  import { ipcRenderer } from 'electron'
   import electronLogo from './assets/electron.svg'
   import Versions from './components/Versions.svelte'
-  import { counter } from './stores/store'
+  import { counter, socket } from './stores/store'
+
+  $socket.on('game-joined', data => {
+    console.log('game joined event: ', data);
+  })
+
+  ipcRenderer.on('game-joined', (_event, arg) => {
+    console.log('game joined event from main: ', arg);
+  })
 </script>
 
 <img alt="logo" class="logo" src={electronLogo} />
