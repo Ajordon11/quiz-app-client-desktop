@@ -2,8 +2,9 @@
   import Versions from './components/Versions.svelte'
   import electronLogo from './assets/electron.svg'
   import { connected, counter, socket } from './stores/store'
+  import DisplayApp from './DisplayApp.svelte'
 
-  const openSecondWindow = (): void => window.Electron.ipcRenderer.send('open-second-window')
+  const openSecondWindow = (): void => window.electron.ipcRenderer.send('open-second-window')
   // const joinGame = (): void => window.electron.ipcRenderer.send('game-joined', { gameId: '12345'});
   const isDisplayOnly = document.getElementById('display-window') !== null;
   console.log('Is this display only? ', isDisplayOnly)
@@ -16,8 +17,7 @@
 
 {#if isDisplayOnly}
 <div class="flex justify-center items-center">
-  <h1>This is display window</h1>
-  {$counter}
+  <DisplayApp />
 </div>
 {/if}
 
