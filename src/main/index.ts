@@ -6,8 +6,8 @@ import icon from '../../resources/icon.png?asset'
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1920,
+    height: 1080,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -18,10 +18,11 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.maximize()
     if (is.dev) {
       mainWindow.webContents.openDevTools({ mode: 'bottom' })
     }
+    createSecondWindow()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -48,8 +49,8 @@ let secondaryWindow: BrowserWindow | null
 function createSecondWindow(): void {
   console.log('creating second window')
   secondaryWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
+    width: 1920,
+    height: 1080,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -65,7 +66,7 @@ function createSecondWindow(): void {
   }
 
   secondaryWindow.on('ready-to-show', () => {
-    secondaryWindow!.show()
+    secondaryWindow!.maximize()
     if (is.dev) {
       secondaryWindow!.webContents.openDevTools({ mode: 'bottom' })
     }
@@ -103,8 +104,8 @@ app.whenReady().then(() => {
 
   ipcMain.on('game-joined', (event, arg) => {
     console.log('game joined: ', arg)
-    event.sender.send('game-joined-reply', { message: 'hello' })
     secondaryWindow?.webContents.send('game-joined', arg)
+    event.sender.send('game-joined-reply', { message: 'hello' })
   })
 
   createWindow()
@@ -124,6 +125,3 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.

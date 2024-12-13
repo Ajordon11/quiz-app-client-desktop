@@ -8,3 +8,5 @@ const url = import.meta.env.PROD
 export const URL = writable(url)
 export const socket = writable<Socket>(io(url))
 export const connected = writable(false)
+
+export const currentGameId = writable<string | null>(null)

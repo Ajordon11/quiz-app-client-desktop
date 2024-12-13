@@ -1,6 +1,4 @@
 <script lang="ts">
-  import electronLogo from './assets/electron.svg'
-  import Versions from './components/Versions.svelte'
   import { socket } from './stores/store'
 
   $socket.on('game-joined', data => {
@@ -13,4 +11,3 @@
 </script>
 
 <div class="creator">This is display window</div>
-<Versions />
