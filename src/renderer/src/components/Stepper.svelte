@@ -30,7 +30,7 @@
 
 <div class="flex flex-col items-center w-full">
   <!-- Stepper -->
-  <div class="flex items-center w-full mb-6">
+  <div class="flex items-center w-full mb-1">
     {#each steps as step, index}
       <div class="flex items-center w-full {index === 0 ? 'ml-52' : ''}">
         <!-- Step Indicator -->
@@ -60,22 +60,4 @@
       </div>
     {/each}
   </div>
-
-  <!-- Navigation Buttons -->
-  <!-- <div class="flex justify-between w-full max-w-3xl mt-4">
-    <button
-      class="px-4 py-2 text-sm font-medium text-white bg-gray-500 rounded-lg hover:bg-gray-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-      on:click={previousStep}
-      disabled={currentStep === 0}
-    >
-      Previous
-    </button>
-    <button
-      class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 rounded-lg hover:bg-indigo-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
-      on:click={nextStep}
-      disabled={currentStep === steps.length - 1}
-    >
-      Next
-    </button>
-  </div> -->
 </div>

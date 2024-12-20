@@ -40,6 +40,9 @@ function createWindow(): void {
 
   mainWindow.on('close', () => {
     secondaryWindow?.close()
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
   })
 
 }
@@ -66,10 +69,10 @@ function createSecondWindow(): void {
   }
 
   secondaryWindow.on('ready-to-show', () => {
-    secondaryWindow!.maximize()
-    if (is.dev) {
-      secondaryWindow!.webContents.openDevTools({ mode: 'bottom' })
-    }
+    // secondaryWindow!.maximize()
+    // if (is.dev) {
+    //   secondaryWindow!.webContents.openDevTools({ mode: 'bottom' })
+    // }
   })
 
   secondaryWindow.on('closed', () => {
