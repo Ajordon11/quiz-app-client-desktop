@@ -1,5 +1,7 @@
 <script>
   import CreateGame from './components/CreateGame.svelte'
+  import Alerts from './components/shared/Alerts.svelte'
+  import StartGameLobby from './components/StartGameLobby.svelte'
   import Stepper from './components/Stepper.svelte';
 
   let steps = ['Create game', 'Start game', 'Start countdown', 'Show correct answer', 'Next question','Show score'];
@@ -13,11 +15,12 @@
 </script>
 
 <div class="p-6 h-screen w-screen">
+  <Alerts />
   <Stepper {steps} bind:currentStep />
   {#if currentStep === 0}
     <CreateGame/>
   {:else if currentStep === 1}
-    <div>Waiting for game to start here, show connected players</div>
+    <StartGameLobby/>
   {:else if currentStep === 5}
     <slot name="show-score" />
   {:else}

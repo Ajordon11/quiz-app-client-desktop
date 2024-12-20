@@ -47,13 +47,12 @@
 <Versions /> -->
 
 <!-- TODO: Actions needed
-- Create game (Name, password, rounds, questions) -> Modal
-- Join display window to game
-- Start game
-- Next question
-- Start coundown
-- Show correct answer
+- DONE Create game (Name, password, rounds, questions) -> Modal
+- DONE Join display window to game
+- Start game + show connected players
+- Game controls - Next question -> Start coundown -> Show correct answer
 - Show score
 
-- Join game in progress as controller and existing player (broadcast to all when controller is lost)
+- DONE Join game in progress as controller and existing player
+  (broadcast to all when controller is lost)
  -->

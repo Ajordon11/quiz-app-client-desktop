@@ -4,6 +4,7 @@
   import { currentGameId, socket, URL } from '../stores/store'
   import SelectExistingGameModal from './SelectExistingGameModal.svelte'
   import type { Game } from '../models/models'
+  import { addAlert, clearAlerts } from '../stores/alerts'
 
   let name = 'Test game'
   let password = 'pass'
@@ -21,8 +22,9 @@
     $socket.emit('game-create', { name, password, code, rounds, questionSet }, (response) => {
       console.log('Response from server on game create: ', response)
       if (!response.success) {
-        alert(response.message)
+        addAlert({ title: 'Error', message: response.message, color: 'red' })
       } else {
+        clearAlerts()
         window.electron.ipcRenderer.send('game-joined', response.gameId)
         $currentGameId = response.gameId
       }
