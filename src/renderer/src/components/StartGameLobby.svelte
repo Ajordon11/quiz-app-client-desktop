@@ -1,13 +1,11 @@
 <script lang="ts">
-  import type { Player } from '../models/models'
+  import { Button } from 'flowbite-svelte'
   import { addAlert, clearAlerts } from '../stores/alerts'
-  import { currentGameId, socket } from '../stores/store'
+  import { currentGame, currentGameId, currentQuestion, players, socket } from '../stores/store'
+  import { PlaySolid } from 'flowbite-svelte-icons'
+  import { createEventDispatcher } from 'svelte'
 
-  let players: Player[] = []
-  $socket.on('game-joined', (data) => {
-    console.log('data from game joined: ', data)
-    players = data.players
-  })
+  const dispatch = createEventDispatcher()
 
   function removePlayer(id: string): void {
     $socket.emit('remove-player', { playerId: id, gameId: $currentGameId }, (response) => {
@@ -16,20 +14,36 @@
         addAlert({ title: 'Error', message: response.message, color: 'red' })
       } else {
         clearAlerts()
-        players = response.data.players
+        $players = response.data
+      }
+    })
+  }
+
+  const startGame = () => {
+    $socket.emit('game-start', { gameId: $currentGameId }, (response) => {
+      console.log('Response from server on start game: ', response)
+      if (!response.success) {
+        addAlert({ title: 'Error', message: response.message, color: 'red' })
+      } else {
+        clearAlerts()
+        $currentQuestion = response.question
+        $currentGame = response.game
+        dispatch('next-step')
       }
     })
   }
 </script>
 
 <div class="p-4 min-h-screen">
-  <!-- Header -->
+  <div class="mb-4 flex justify-center items-center">
+    <Button size="xl" on:click={startGame} color="green" class="w-96"><PlaySolid class="w-6 h-6 me-2" />Start Game</Button>
+  </div>
   <h1 class="text-2xl font-bold text-center text-primary mb-4">Player List</h1>
 
-  {#if players.length > 0}
+  {#if $players.length > 0}
     <!-- Player List -->
     <ul class="space-y-3">
-      {#each players as player, index}
+      {#each $players as player, index}
         <li
           class="flex items-center justify-between p-4 bg-white shadow-md rounded-lg border border-gray-200"
         >
@@ -50,12 +64,12 @@
 
           <!-- Action Buttons (Optional) -->
           <div class="flex space-x-2">
-            <button
-              class="px-3 py-1 text-sm text-white bg-green-500 rounded-lg hover:bg-green-600"
-              on:click={() => addAlert({ title: 'Error', message: 'Not implemented', color: 'red' })}
-            >
-              Update
-            </button>
+            <div class="flex items-center gap-2">
+              <div
+                class="w-3 h-3 rounded-full {player.connected !== false ? 'bg-green-500' : 'bg-red-500'}"
+                title={player.connected !== false ? 'Connected' : 'Disconnected'}
+              ></div>
+            </div>
             <button
               class="px-3 py-1 text-sm text-white bg-red-500 rounded-lg hover:bg-red-600"
               on:click={() => removePlayer(player.id)}

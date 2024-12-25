@@ -12,7 +12,9 @@ export type Game = {
 export type Player = {
   id: string
   name: string
+  connected: boolean
   score?: number
+  lastAnswer?: string
 }
 
 export type AlertProps = {
@@ -22,4 +24,13 @@ export type AlertProps = {
   color?: any
   timeout?: number
   dismissable?: boolean
+}
+
+export type Question = {
+  question: string
+  type: string
+  options: string[]
+  image?: string
+  answer?: string
+  full_answer?: string
 }

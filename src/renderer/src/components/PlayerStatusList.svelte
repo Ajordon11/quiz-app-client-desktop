@@ -1,31 +1,10 @@
 <script lang="ts">
   import { A, Badge } from 'flowbite-svelte'
   import { EditSolid } from 'flowbite-svelte-icons'
-
-  // Array of player objects
-  export let players = [
-    {
-      name: 'Alice',
-      score: 10,
-      lastAnswer: 'Paris',
-      isConnected: true
-    },
-    {
-      name: 'Bob',
-      score: 8,
-      lastAnswer: 'Berlin',
-      isConnected: false
-    },
-    {
-      name: 'Charlie',
-      score: 152,
-      lastAnswer: null,
-      isConnected: true
-    }
-  ]
+  import { players } from '../stores/store'
 
   // Sort players by score in descending order
-  $: sortedPlayers = [...players].sort((a, b) => b.score - a.score)
+  $: sortedPlayers = [...$players].sort((a, b) => b.score - a.score)
 </script>
 
 <div class="p-2 min-h-screen">
@@ -63,8 +42,8 @@
         <!-- Connection Status -->
         <div class="flex items-center gap-2">
           <div
-            class="w-3 h-3 rounded-full {player.isConnected ? 'bg-green-500' : 'bg-red-500'}"
-            title={player.isConnected ? 'Connected' : 'Disconnected'}
+            class="w-3 h-3 rounded-full {player.connected !== false ? 'bg-green-500' : 'bg-red-500'}"
+            title={player.connected !== false ? 'Connected' : 'Disconnected'}
           ></div>
         </div>
 

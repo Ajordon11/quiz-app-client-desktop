@@ -13,7 +13,7 @@
     List,
     Modal
   } from 'flowbite-svelte'
-  import { currentGameId, socket } from '../stores/store'
+  import { currentGame, currentGameId, currentQuestion, players, socket } from '../stores/store'
   import type { Game } from '../models/models'
   import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons'
 
@@ -35,8 +35,14 @@
         password = ''
       } else {
         showError = false
-        window.electron.ipcRenderer.send('game-joined', response.gameId)
-        $currentGameId = response.gameId
+        $currentGame = response.game
+        $currentGameId = response.game.id
+        $players = response.game.players
+        const isActive = response.game.status === 'IN_PROGRESS';
+        if (isActive) {
+          $currentQuestion = response.game.questionSet.questions[response.game.currentRound]
+        }
+        window.electron.ipcRenderer.send('game-joined', { gameId: response.game.id, active: isActive })
         openModal = false
       }
     })

@@ -1,24 +1,6 @@
 <script>
   export let steps = []; // Array of step labels
   export let currentStep = 0; // Current active step (0-based index)
-
-  const goToStep = (index) => {
-    if (index >= 0 && index < steps.length) {
-      currentStep = index;
-    }
-  };
-
-  const nextStep = () => {
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-    }
-  };
-
-  const previousStep = () => {
-    if (currentStep > 0) {
-      currentStep--;
-    }
-  };
 </script>
 
 <style>
@@ -36,7 +18,7 @@
         <!-- Step Indicator -->
         <div
           class="step-indicator flex items-center justify-center w-10 h-10 text-white font-bold rounded-full
-          {index <= currentStep ? 'bg-indigo-500' : 'bg-gray-300'}"
+          {index <= currentStep ? 'bg-orange-500' : 'bg-gray-300'}"
         >
           {index + 1}
         </div>
@@ -45,7 +27,7 @@
         <div class="flex-1">
           <p
             class="ml-4 text-sm font-medium
-            {index <= currentStep ? 'text-indigo-600' : 'text-gray-500'}"
+            {index <= currentStep ? 'text-orange-600' : 'text-gray-500'}"
           >
             {step}
           </p>
@@ -54,7 +36,7 @@
         <!-- Line between steps -->
         {#if index < steps.length - 1}
           <div
-            class="h-1 w-full bg-gray-300 mx-5 {index < currentStep ? 'bg-indigo-500' : ''} transition-all"
+            class="h-1 w-full bg-gray-300 mx-5 {index < currentStep ? 'bg-orange-500' : ''} transition-all"
           ></div>
         {/if}
       </div>

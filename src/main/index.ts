@@ -107,8 +107,8 @@ app.whenReady().then(() => {
 
   ipcMain.on('game-joined', (event, arg) => {
     console.log('game joined: ', arg)
-    secondaryWindow?.webContents.send('game-joined', arg)
-    event.sender.send('game-joined-reply', { message: 'hello' })
+    secondaryWindow?.webContents.send('game-joined', arg.gameId)
+    event.sender.send('game-joined-reply', { active: arg.active })
   })
 
   createWindow()

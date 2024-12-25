@@ -1,7 +1,7 @@
 <script lang="ts">
   import { A, Button, Input, Label, Tooltip } from 'flowbite-svelte'
   import CustomLabel from './shared/CustomLabel.svelte'
-  import { currentGameId, socket, URL } from '../stores/store'
+  import { currentGame, currentGameId, socket, URL } from '../stores/store'
   import SelectExistingGameModal from './SelectExistingGameModal.svelte'
   import type { Game } from '../models/models'
   import { addAlert, clearAlerts } from '../stores/alerts'
@@ -9,8 +9,8 @@
   let name = 'Test game'
   let password = 'pass'
   let code = '1234'
-  let rounds = 30
-  let questionSet = 'data'
+  let rounds = 10
+  let questionSet = 'data2'
 
   let games: Game[] = []
   let openModal = false
@@ -25,8 +25,9 @@
         addAlert({ title: 'Error', message: response.message, color: 'red' })
       } else {
         clearAlerts()
-        window.electron.ipcRenderer.send('game-joined', response.gameId)
-        $currentGameId = response.gameId
+        window.electron.ipcRenderer.send('game-joined', { gameId: response.game.id, active: false })
+        $currentGame = response.game
+        $currentGameId = response.game.id
       }
     })
   }
