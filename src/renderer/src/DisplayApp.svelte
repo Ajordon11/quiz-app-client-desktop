@@ -8,6 +8,7 @@
     currentGame,
     currentGameId,
     currentQuestion,
+    githubUrl,
     players,
     showScore,
     socket
@@ -15,6 +16,8 @@
 
   let firstPlayerName = ''
   let showFirst = false
+  let song = ''
+  let audio: HTMLAudioElement = new Audio()
 
   window.electron.ipcRenderer.on('game-joined', (_event, arg) => {
     console.log('game joined event from main: ', arg)
@@ -38,12 +41,22 @@
     console.log('data from show first: ', data)
     showFirst = true
     firstPlayerName = data.name
+    if (data.song) {
+      song = `${$githubUrl}/audio/${data.song}.mp3`
+      audio.src = song
+      audio.load()
+      setTimeout(() => {
+        console.log('what is audio? ', audio)
+        audio.play()
+      })
+    }
     setTimeout(() => {
       showFirst = false
     }, 5000)
   })
 </script>
 
+<audio bind:this={audio}></audio>
 {#if $currentQuestion && !$showScore && !showFirst}
   <ProgressBar />
   <QuestionDisplay />
@@ -59,7 +72,7 @@
     <h2>Game ID: {$currentGameId}</h2>
     <p class="text-lg text-white">Waiting for game to start</p>
     <img
-      src={'https://github.com/Ajordon11/quiz-app-client-desktop/tree/main/resources/images/qr_code.png'}
+      src={$githubUrl +'/images/qr_code.png'}
       alt="https://quiz-app-client-qoo0.onrender.com/"
       class="w-52 h-52 m-10 rounded-md shadow-lg"
     />

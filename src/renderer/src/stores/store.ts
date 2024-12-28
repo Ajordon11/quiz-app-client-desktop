@@ -5,6 +5,8 @@ import type { Game, Player, Question } from '../models/models'
 const url = import.meta.env.PROD
   ? import.meta.env.VITE_PROD_SERVER_URL
   : import.meta.env.VITE_DEV_SERVER_URL
+
+const githubResourceUrl = import.meta.env.VITE_GITHUB_RESOURCES
 export const URL = writable(url)
 export const socket = writable<Socket>(io(url))
 export const connected = writable(false)
@@ -15,3 +17,4 @@ export const currentQuestion = writable<Question | null>(null)
 export const countdownTime = writable(5)
 export const players = writable<Player[]>([])
 export const showScore = writable(false)
+export const githubUrl = writable(githubResourceUrl)
