@@ -40,7 +40,7 @@
         $players = response.game.players
         const isActive = response.game.status === 'IN_PROGRESS';
         if (isActive) {
-          $currentQuestion = response.game.questionSet.questions[response.game.currentRound]
+          $currentQuestion = response.game.questionSet.questions[response.game.currentRound - 1]
         }
         window.electron.ipcRenderer.send('game-joined', { gameId: response.game.id, active: isActive })
         openModal = false

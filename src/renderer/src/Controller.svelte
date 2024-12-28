@@ -4,7 +4,7 @@
   import Alerts from './components/shared/Alerts.svelte'
   import StartGameLobby from './components/StartGameLobby.svelte'
   import Stepper from './components/Stepper.svelte';
-  import { players, socket } from './stores/store'
+  import { currentGame, players, socket } from './stores/store'
 
   let steps = ['Create game', 'Start game', 'Start countdown', 'Show correct answer', 'Next question','Show score'];
   let currentStep = 0;
@@ -42,6 +42,10 @@
   function nextStep(event) {
     console.log('next step event: ', event)
     currentStep = event.detail.step
+  }
+
+  $: if ($currentGame === null) {
+    currentStep = 0
   }
 
 </script>

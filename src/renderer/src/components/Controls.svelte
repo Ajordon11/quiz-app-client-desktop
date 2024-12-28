@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from 'flowbite-svelte';
-  import { countdownTime, currentGame, currentGameId, currentQuestion, players, socket } from '../stores/store'
+  import { countdownTime, currentGame, currentGameId, currentQuestion, players, socket, showScore } from '../stores/store'
   import { addAlert } from '../stores/alerts'
   import { createEventDispatcher } from 'svelte'
 
@@ -52,7 +52,7 @@
     $socket.emit('show-answer', { gameId: $currentGameId })
   }
 
-  $socket.on('correct-answer', (_answer: string) => {
+  $socket.on('correct-answer', (_answer) => {
     console.log('correct answer received: ', _answer)
     canSendNextQuestion = true
     canShowAnswer = false
@@ -78,18 +78,20 @@
         dispatch('change-step', { step: 5 });
       } else {
         canShowScore = false
-        $currentQuestion = response.data
+        $currentQuestion = response.data.question
         $players = $players.map(p => ({ ...p, lastAnswer: '' }))
         canStartCountdown = true
         canSendNextQuestion = false
         canShowAnswer = false
+        $currentGame.currentRound = response.data.round
         dispatch('change-step', { step: 2 });
+        $showScore = false
       }
     })
   }
 
   // TODO Show the score
-  const showScore = () => {
+  const showScoreMessage = () => {
     $socket.emit('show-score', { gameId: $currentGameId })
     dispatch('change-step', { step: 5 });
   };
@@ -124,7 +126,7 @@
     <Button on:click={sendNextQuestion} size="sm" color="green" class="flex-1" disabled={!canSendNextQuestion}>
       Next Question
     </Button>
-    <Button on:click={showScore} size="sm" color="yellow" class="flex-1" disabled={!canShowScore}>
+    <Button on:click={showScoreMessage} size="sm" color="yellow" class="flex-1" disabled={!canShowScore}>
       Show Score
     </Button>
   </div>

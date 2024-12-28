@@ -1,32 +1,37 @@
 <script lang="ts">
-  import { Badge } from 'flowbite-svelte';
+  import { Badge } from 'flowbite-svelte'
+  import CustomLabel from './shared/CustomLabel.svelte'
   import { players } from '../stores/store'
 
+  // Generate gradient colors based on position
+  function getGradient(index, total) {
+    const greenRatio = (total - index) / total
+    const redRatio = index / total
+    return `linear-gradient(to right, rgba(0, 255, 0, ${greenRatio}), rgba(255, 0, 0, ${redRatio}))`
+  }
+
   // Sort players by score in descending order
-  $: sortedPlayers = [...$players].sort((a, b) => b.score - a.score);
+  $: sortedPlayers = [...$players,...$players, ...$players, ...$players, ...$players, ...$players].sort((a, b) => b.score - a.score)
 </script>
 
-<div class="min-h-screen bg-gray-900 text-white flex flex-col items-center p-4">
-  <!-- Header -->
-  <h1 class="text-3xl font-bold mb-6">Leaderboard</h1>
-
-  <!-- Player List -->
-  <div class="w-full max-w-lg">
-    <ul class="space-y-4">
+<div class="flex flex-col items-center gap-2 mt-10">
+  <CustomLabel>Leaderboard</CustomLabel>
+  <div class="h-full w-full">
+    <ul class="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto min-w-80 {sortedPlayers.length > 10 ? 'columns-2' : ''}">
       {#each sortedPlayers as player, index}
         <li
-          class="p-4 bg-gray-800 rounded-lg shadow-md flex items-center justify-between"
+          class="p-1 rounded-lg flex flex-row items-center justify-between shadow-md border border-gray-700 bg-gray-800"
+          style="background: {getGradient(index, sortedPlayers.length)}"
         >
-          <!-- Player Name and Rank -->
-          <div>
-            <p class="text-lg font-semibold">{player.name}</p>
-            <p class="text-sm text-gray-400">Rank #{index + 1}</p>
+          <div class="flex items-center gap-2">
+            <Badge class="text-sm font-medium text-white">#{index + 1}</Badge>
+            <span class="text-lg font-semibold text-white">{player.name}</span>
           </div>
 
-          <!-- Player Score -->
-          <Badge color="purple" class="text-sm font-medium">
-            {player.score} pts
-          </Badge>
+          <div class="flex items-center gap-2">
+            <p class="text-sm text-gray-400">Score:</p>
+            <Badge class="text-sm font-medium text-white">{player.score}</Badge>
+          </div>
         </li>
       {/each}
     </ul>

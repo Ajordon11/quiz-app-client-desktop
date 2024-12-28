@@ -69,7 +69,7 @@ function createSecondWindow(): void {
   }
 
   secondaryWindow.on('ready-to-show', () => {
-    // secondaryWindow!.maximize()
+    secondaryWindow!.maximize()
     // if (is.dev) {
     //   secondaryWindow!.webContents.openDevTools({ mode: 'bottom' })
     // }

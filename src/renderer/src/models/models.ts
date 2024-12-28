@@ -3,7 +3,7 @@ export type Game = {
   name: string
   status: string
   rounds: number
-  questionSet: string
+  questionSet: string | any
   createdAt: Date
   players: number
   currentRound: number

@@ -12,7 +12,7 @@
   <h1 class="text-2xl font-bold text-center text-white mb-2">Player Status</h1>
 
   <!-- Player List -->
-  <ul class="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+  <ul class="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto overflow-x-hidden">
     {#each sortedPlayers as player, index}
       <li
         class="p-1 rounded-lg shadow-md flex flex-col sm:flex-row justify-between items-center border border-gray-700 bg-gray-800 relative"
@@ -30,7 +30,9 @@
         <!-- Player Info -->
         <div class="flex-1 mb-2 sm:mb-0">
           <p class="text-lg font-semibold text-white">{player.name}</p>
-          <p class="text-sm text-gray-400">Answer: {player.lastAnswer ? player.lastAnswer : '---'}</p>
+          <p class="text-sm text-gray-400 truncate ... max-w-44">
+            A: {player.lastAnswer !== '' ? player.lastAnswer : '---'}
+          </p>
         </div>
 
         <!-- Player Score -->
@@ -42,11 +44,12 @@
         <!-- Connection Status -->
         <div class="flex items-center gap-2">
           <div
-            class="w-3 h-3 rounded-full {player.connected !== false ? 'bg-green-500' : 'bg-red-500'}"
+            class="w-3 h-3 rounded-full {player.connected !== false
+              ? 'bg-green-500'
+              : 'bg-red-500'}"
             title={player.connected !== false ? 'Connected' : 'Disconnected'}
           ></div>
         </div>
-
       </li>
     {/each}
   </ul>
