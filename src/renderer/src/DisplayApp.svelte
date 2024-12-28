@@ -1,4 +1,5 @@
 <script lang="ts">
+  import FirstPlayerDisplay from './components/FirstPlayerDisplay.svelte'
   import PlayerScoreList from './components/PlayerScoreList.svelte'
   import QuestionDisplay from './components/QuestionDisplay.svelte'
   import ProgressBar from './components/shared/ProgressBar.svelte'
@@ -11,6 +12,9 @@
     showScore,
     socket
   } from './stores/store'
+
+  let firstPlayerName = ''
+  let showFirst = false
 
   window.electron.ipcRenderer.on('game-joined', (_event, arg) => {
     console.log('game joined event from main: ', arg)
@@ -29,14 +33,25 @@
     $showScore = true
     $players = data
   })
+
+  $socket.on('show-first', (data) => {
+    console.log('data from show first: ', data)
+    showFirst = true
+    firstPlayerName = data.name
+    setTimeout(() => {
+      showFirst = false
+    }, 5000)
+  })
 </script>
 
-{#if $currentQuestion && !$showScore}
+{#if $currentQuestion && !$showScore && !showFirst}
   <ProgressBar />
   <QuestionDisplay />
 {:else if $showScore}
   <ProgressBar />
   <PlayerScoreList />
+{:else if showFirst}
+  <FirstPlayerDisplay {firstPlayerName}/>
 {:else}
   <!-- TODO Add loading animation or random gifs -->
   <div class="flex flex-col items-center justify-center h-screen">

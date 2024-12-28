@@ -52,6 +52,17 @@
     $socket.emit('show-answer', { gameId: $currentGameId })
   }
 
+  const sendShowFirstMessage = () => {
+    $socket.emit('show-first', { gameId: $currentGameId }, (response) => {
+      console.log('Response from server on show first: ', response)
+      if (!response.success) {
+        addAlert({ title: 'Error', message: response.message, color: 'red' })
+      } else {
+        console.log('music is playing ')
+      }
+    })
+  }
+
   $socket.on('correct-answer', (_answer) => {
     console.log('correct answer received: ', _answer)
     canSendNextQuestion = true
@@ -122,6 +133,9 @@
     </Button>
     <Button on:click={sendShowAnswerMessage} size="sm" color="purple" class="flex-1" disabled={!canShowAnswer}>
       Show Answer
+    </Button>
+    <Button on:click={sendShowFirstMessage} size="sm" color="red" class="flex-1" disabled={!canShowScore}>
+      Show First
     </Button>
     <Button on:click={sendNextQuestion} size="sm" color="green" class="flex-1" disabled={!canSendNextQuestion}>
       Next Question
