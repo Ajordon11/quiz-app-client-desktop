@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Progressbar } from 'flowbite-svelte'
-  import { countdownTime, currentQuestion, socket } from '../stores/store'
+  import { countdownTime, currentQuestion, githubDataUrl, socket } from '../stores/store'
   import { linear } from 'svelte/easing'
 
   let timeLeft = $countdownTime // Timer state
@@ -115,7 +115,7 @@
               />
             {:else}
               <img
-                src={`/temp/images/${$currentQuestion.image}`}
+                src={`${$githubDataUrl}/images/${$currentQuestion.image}`}
                 alt="Question related"
                 class="max-w-full max-h-full rounded-md shadow-lg"
               />

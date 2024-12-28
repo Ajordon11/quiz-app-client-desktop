@@ -46,7 +46,6 @@
       audio.src = song
       audio.load()
       setTimeout(() => {
-        console.log('what is audio? ', audio)
         audio.play()
       })
     }

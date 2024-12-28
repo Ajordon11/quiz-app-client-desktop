@@ -7,6 +7,7 @@ const url = import.meta.env.PROD
   : import.meta.env.VITE_DEV_SERVER_URL
 
 const githubResourceUrl = import.meta.env.VITE_GITHUB_RESOURCES
+const githubDataResourceUrl = import.meta.env.VITE_GITHUB_DATA_RESOURCES
 export const URL = writable(url)
 export const socket = writable<Socket>(io(url))
 export const connected = writable(false)
@@ -18,3 +19,4 @@ export const countdownTime = writable(5)
 export const players = writable<Player[]>([])
 export const showScore = writable(false)
 export const githubUrl = writable(githubResourceUrl)
+export const githubDataUrl = writable(githubDataResourceUrl)
