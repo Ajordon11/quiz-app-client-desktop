@@ -53,8 +53,7 @@
 </div>
 
 <!-- TODO: Actions needed
-  (broadcast to all when controller is lost)
-- re-join game in progress as a player - NEEDS TESTING
-  - add loading for datasets and images
-  - show all questions for host (available from game-start)
+  - (broadcast to all when controller is lost)
+  - add loading for datasets and images - from and to server
+  - add music samples
  -->

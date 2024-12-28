@@ -51,12 +51,17 @@
   <ProgressBar />
   <PlayerScoreList />
 {:else if showFirst}
-  <FirstPlayerDisplay {firstPlayerName}/>
+  <FirstPlayerDisplay {firstPlayerName} />
 {:else}
   <!-- TODO Add loading animation or random gifs -->
   <div class="flex flex-col items-center justify-center h-screen">
     <h1 class="text-2xl font-bold text-white">Display</h1>
     <h2>Game ID: {$currentGameId}</h2>
     <p class="text-lg text-white">Waiting for game to start</p>
+    <img
+      src={'https://github.com/Ajordon11/quiz-app-client-desktop/tree/main/resources/images/qr_code.png'}
+      alt="https://quiz-app-client-qoo0.onrender.com/"
+      class="w-52 h-52 m-10 rounded-md shadow-lg"
+    />
   </div>
 {/if}
