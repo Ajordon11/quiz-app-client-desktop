@@ -58,5 +58,4 @@
   >
     {firstPlayerName}
   </div>
-  <div class="absolute bottom-0">Predstavte si ze hra pesnicka teraz</div>
 </div>

@@ -5,7 +5,7 @@ export type Game = {
   rounds: number
   questionSet: string | any
   createdAt: Date
-  players: number
+  players: Player[]
   currentRound: number
 }
 

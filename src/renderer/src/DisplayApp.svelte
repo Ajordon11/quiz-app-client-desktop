@@ -42,7 +42,7 @@
     showFirst = true
     firstPlayerName = data.name
     if (data.song) {
-      song = `${$githubUrl}/audio/${data.song}.mp3`
+      song = `${$githubUrl}/audio/${data.song.replace(' ', '_')}.mp3`
       audio.src = song
       audio.load()
       setTimeout(() => {

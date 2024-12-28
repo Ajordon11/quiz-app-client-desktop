@@ -1,6 +1,12 @@
 <script lang="ts">
   import { Progressbar } from 'flowbite-svelte'
-  import { countdownTime, currentQuestion, githubDataUrl, socket } from '../stores/store'
+  import {
+    countdownTime,
+    currentGame,
+    currentQuestion,
+    githubDataUrl,
+    socket
+  } from '../stores/store'
   import { linear } from 'svelte/easing'
 
   let timeLeft = $countdownTime // Timer state
@@ -11,6 +17,7 @@
   let isHttpImage = false
   let isWideImage = false
   let imageLoaded = false
+  let correctPlayers = 0
 
   $socket.on('countdown', () => {
     console.log('starting countdown')
@@ -19,12 +26,16 @@
     updateTimer()
   })
 
-  $socket.on('correct-answer', (data: { answer: string; full: string | null }) => {
-    correctAnswer = data.answer
-    correctAnswerFull = data.full
-    showCountdown = false
-    progress = 0
-  })
+  $socket.on(
+    'correct-answer',
+    (data: { answer: string; full: string | null; correctPlayers: number }) => {
+      correctAnswer = data.answer
+      correctAnswerFull = data.full
+      correctPlayers = data.correctPlayers
+      showCountdown = false
+      progress = 0
+    }
+  )
 
   function updateTimer() {
     if (timeLeft > 0) {
@@ -81,6 +92,15 @@
           <div class="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition">
             <h2 class="text-2xl font-semibold mb-2">{correctAnswer}</h2>
             {#if correctAnswerFull}<p class="text-lg">{correctAnswerFull}</p>{/if}
+            {#if typeof $currentGame.players === 'number'}
+              <p class="text-lg">
+                {correctPlayers}/{$currentGame.players} players answered correctly
+              </p>
+            {:else if $currentGame.players.length > 0}
+              <p class="text-lg">
+                {correctPlayers}/{$currentGame.players.length} players answered correctly
+              </p>
+            {/if}
           </div>
         {/if}
       </div>
