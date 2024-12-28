@@ -11,7 +11,7 @@
   }
 
   // Sort players by score in descending order
-  $: sortedPlayers = [...$players,...$players, ...$players, ...$players, ...$players, ...$players].sort((a, b) => b.score - a.score)
+  $: sortedPlayers = [...$players].sort((a, b) => b.score - a.score)
 </script>
 
 <div class="flex flex-col items-center gap-2 mt-10">

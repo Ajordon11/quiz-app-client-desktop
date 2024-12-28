@@ -1,7 +1,29 @@
 <script lang="ts">
   import { A, Badge } from 'flowbite-svelte'
-  import { EditSolid } from 'flowbite-svelte-icons'
-  import { players } from '../stores/store'
+  import { CheckCircleSolid, EditSolid } from 'flowbite-svelte-icons'
+  import { currentGameId, players, socket } from '../stores/store'
+  import { addAlert } from '../stores/alerts'
+
+  let editting = false
+  let newScoreValue = 0
+
+  function editPlayer(player) {
+    console.log('edit player: ', player)
+    editting = true
+    newScoreValue = player.score
+  }
+
+  function saveEdit(player) {
+    editting = false
+    $socket.emit('edit-player-score', { playerId: player.id, score: newScoreValue, gameId: $currentGameId }, (response) => {
+      console.log('Response from server on edit player score: ', response)
+      if (!response.success) {
+        addAlert({ title: 'Error', message: response.message, color: 'red' })
+      } else {
+        $players = response.data
+      }
+    })
+  }
 
   // Sort players by score in descending order
   $: sortedPlayers = [...$players].sort((a, b) => b.score - a.score)
@@ -19,9 +41,15 @@
       >
         <!-- Edit Button -->
         <div class="absolute top-0 right-0">
-          <A class="text-white">
+          {#if editting}
+            <A class="text-white" on:click={() => {saveEdit(player)}}>
+              <CheckCircleSolid class="w-4 h-4" />
+            </A>
+          {:else}
+          <A class="text-white" on:click={() => {editPlayer(player)}}>
             <EditSolid class="w-4 h-4" />
           </A>
+          {/if}
         </div>
         <!-- Player Standing -->
         <div class="flex items-center gap-2">
@@ -38,7 +66,14 @@
         <!-- Player Score -->
         <div class="flex items-center gap-2">
           <p class="text-sm text-gray-400">Score:</p>
-          <Badge class="text-sm font-medium text-white">{player.score}</Badge>
+          {#if !editting}<Badge class="text-sm font-medium text-white">{player.score}</Badge>
+          {:else}
+            <input
+              type="number"
+              bind:value={newScoreValue}
+              class="bg-gray-700 text-white border border-gray-600 rounded-md px-2 py-1"
+            />
+          {/if}
         </div>
 
         <!-- Connection Status -->

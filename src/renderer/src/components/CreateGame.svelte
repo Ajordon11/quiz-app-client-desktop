@@ -14,7 +14,6 @@
 
   let games: Game[] = []
   let openModal = false
-  let loading = false
 
   const handleForm = (e) => {
     e.preventDefault()
@@ -39,7 +38,6 @@
     openModal = true
   }
   async function getAllGames() {
-    loading = true
     const res = await fetch($URL + '/api/games')
     games = (await res.json()) as Game[]
     return games
