@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { A, Button, Input, Label, Tooltip } from 'flowbite-svelte'
+  import { A, Button, Input, Label, Toggle, Tooltip } from 'flowbite-svelte'
   import CustomLabel from './shared/CustomLabel.svelte'
   import { currentGame, currentGameId, socket, URL } from '../stores/store'
   import SelectExistingGameModal from './SelectExistingGameModal.svelte'
@@ -14,10 +14,14 @@
 
   let games: Game[] = []
   let openModal = false
+  let manualMode = false
 
   const handleForm = (e) => {
     e.preventDefault()
-    console.log('create game', name, password, code, rounds, questionSet)
+    if (manualMode) {
+      questionSet = ''
+    }
+    console.log('create game', name, password, code, rounds, questionSet, manualMode)
     $socket.emit('game-create', { name, password, code, rounds, questionSet }, (response) => {
       console.log('Response from server on game create: ', response)
       if (!response.success) {
@@ -64,10 +68,16 @@
       <span>Number of rounds</span>
       <Input type="number" name="rounds" placeholder="30" required bind:value={rounds} />
     </Label>
+    <Toggle bind:checked={manualMode} class="text-white space-y-2" color="teal">
+      <svelte:fragment slot="offLabel">Automatic mode</svelte:fragment>
+      Manual mode
+    </Toggle>
+    {#if !manualMode}
     <Label class="space-y-2 text-white">
       <span>Question set</span>
       <Input type="text" name="questions" placeholder="data" required bind:value={questionSet} />
     </Label>
+    {/if}
     <Button type="submit" color="alternative" class="w-full" autofocus>Create game</Button>
     <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
       Game already exists? <A

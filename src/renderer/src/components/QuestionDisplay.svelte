@@ -56,6 +56,9 @@
     if ($currentQuestion.image == null) {
       imageLoaded = false
     } else {
+      if (!isHttpImage) {
+        $currentQuestion.image = `${$githubDataUrl}/images/${$currentQuestion.image}`
+      }
       const img = new Image()
       img.src = $currentQuestion.image
       if (img.complete) {
@@ -127,19 +130,11 @@
         </div>
         <div class="col-span-3 row-span-5 col-start-3">
           <div class="flex-1 flex justify-center items-center p-6">
-            {#if isHttpImage}
-              <img
-                src={$currentQuestion.image}
-                alt="Question related"
-                class="max-w-full max-h-full rounded-md shadow-lg"
-              />
-            {:else}
-              <img
-                src={`${$githubDataUrl}/images/${$currentQuestion.image}`}
-                alt="Question related"
-                class="max-w-full max-h-full rounded-md shadow-lg"
-              />
-            {/if}
+            <img
+              src={$currentQuestion.image}
+              alt="Question related"
+              class="max-w-full max-h-full rounded-md shadow-lg"
+            />
           </div>
         </div>
       </div>
@@ -154,19 +149,11 @@
             {#if correctAnswerFull}<p class="text-lg">{correctAnswerFull}</p>{/if}
           </div>
         {/if}
-        {#if isHttpImage}
-          <img
-            src={$currentQuestion.image}
-            alt="Question related"
-            class="max-w-full max-h-full rounded-md shadow-lg"
-          />
-        {:else}
-          <img
-            src={`/temp/images/${$currentQuestion.image}`}
-            alt="Question related"
-            class="max-w-full max-h-full rounded-md shadow-lg"
-          />
-        {/if}
+        <img
+          src={$currentQuestion.image}
+          alt="Question related"
+          class="max-w-full max-h-full rounded-md shadow-lg"
+        />
       </div>
     {/if}
   </div>

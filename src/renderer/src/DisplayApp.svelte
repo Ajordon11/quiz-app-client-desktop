@@ -29,7 +29,9 @@
       }
       $currentGame = response.data
       $currentGameId = response.data.id
-      $currentQuestion = response.data.questionSet.questions[response.data.currentRound - 1]
+      if (!response.data.manualMode) {
+        $currentQuestion = response.data.questionSet.questions[response.data.currentRound - 1]
+      }
     })
   })
   $socket.on('show-score', (data) => {
@@ -42,7 +44,7 @@
     showFirst = true
     firstPlayerName = data.name
     if (data.song) {
-      song = `${$githubUrl}/audio/${data.song.replace(' ', '_')}.mp3`
+      song = `${$githubUrl}/audio/${data.song.replaceAll(' ', '_')}.mp3`
       audio.src = song
       audio.load()
       setTimeout(() => {

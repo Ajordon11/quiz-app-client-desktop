@@ -7,6 +7,7 @@ export type Game = {
   createdAt: Date
   players: Player[]
   currentRound: number
+  manualMode: boolean
 }
 
 export type Player = {

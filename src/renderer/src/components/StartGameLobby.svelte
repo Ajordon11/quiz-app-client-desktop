@@ -26,8 +26,10 @@
         addAlert({ title: 'Error', message: response.message, color: 'red' })
       } else {
         clearAlerts()
-        $currentQuestion = response.question
         $currentGame = response.game
+        if (!response.game.manualMode) {
+          $currentQuestion = response.question
+        }
         dispatch('next-step')
       }
     })

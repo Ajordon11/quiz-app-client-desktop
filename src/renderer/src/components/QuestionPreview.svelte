@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { currentGame } from '../stores/store'
+  import { Button, Modal } from "flowbite-svelte"
+  import { CirclePlusSolid } from "flowbite-svelte-icons"
+  import { currentGame, nextManualQuestion } from "../stores/store"
+  import ManualQuestionForm from "./ManualQuestionForm.svelte"
 
-  $: nextQuestion =
-    $currentGame.currentRound === $currentGame.rounds
-      ? null
-      : $currentGame.questionSet.questions[$currentGame.currentRound]
+  export let nextQuestion
+  let manualModeModalOpened = false
 </script>
 
 <div class="w-full h-full">
@@ -25,4 +26,14 @@
   {:else}
     <p class="text-xl italic mb-2 mt-2">No more questions</p>
   {/if}
+  {#if $currentGame.manualMode && $nextManualQuestion == null}
+      <Button on:click={() => (manualModeModalOpened = true)}>
+        <CirclePlusSolid class="w-6 h-6 me-2" />
+        Prepare next manual question
+      </Button>
+  {/if}
+
 </div>
+<Modal bind:open={manualModeModalOpened} class="bg-gray-800">
+  <ManualQuestionForm onSubmit={() => (manualModeModalOpened = false)} sendDirectly={false} />
+</Modal>
