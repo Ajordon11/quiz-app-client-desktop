@@ -4,17 +4,17 @@
   import { currentGameId, players, socket } from '../stores/store'
   import { addAlert } from '../stores/alerts'
 
-  let editting = false
+  let editting: boolean[] = []
   let newScoreValue = 0
 
-  function editPlayer(player) {
+  function editPlayer(player, index: number) {
     console.log('edit player: ', player)
-    editting = true
+    editting[index] = true
     newScoreValue = player.score
   }
 
-  function saveEdit(player) {
-    editting = false
+  function saveEdit(player, index: number) {
+    editting[index] = false
     $socket.emit('edit-player-score', { playerId: player.id, score: newScoreValue, gameId: $currentGameId }, (response) => {
       console.log('Response from server on edit player score: ', response)
       if (!response.success) {
@@ -41,12 +41,12 @@
       >
         <!-- Edit Button -->
         <div class="absolute top-0 right-0">
-          {#if editting}
-            <A class="text-white" on:click={() => {saveEdit(player)}}>
+          {#if editting[index] === true}
+            <A class="text-white" on:click={() => {saveEdit(player, index)}}>
               <CheckCircleSolid class="w-4 h-4" />
             </A>
           {:else}
-          <A class="text-white" on:click={() => {editPlayer(player)}}>
+          <A class="text-white" on:click={() => {editPlayer(player, index)}}>
             <EditSolid class="w-4 h-4" />
           </A>
           {/if}
@@ -66,7 +66,7 @@
         <!-- Player Score -->
         <div class="flex items-center gap-2">
           <p class="text-sm text-gray-400">Score:</p>
-          {#if !editting}<Badge class="text-sm font-medium text-white">{player.score}</Badge>
+          {#if !editting[index]}<Badge class="text-sm font-medium text-white">{player.score}</Badge>
           {:else}
             <input
               type="number"

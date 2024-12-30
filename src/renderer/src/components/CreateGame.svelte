@@ -10,7 +10,7 @@
   let password = 'pass'
   let code = '1234'
   let rounds = 10
-  let questionSet = 'data2'
+  let questionSet = 'data'
 
   let games: Game[] = []
   let openModal = false

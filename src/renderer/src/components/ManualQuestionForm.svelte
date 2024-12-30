@@ -28,6 +28,7 @@
     if (sendDirectly === false) {
       console.log('not sending directly')
       $nextManualQuestion = question
+      onSubmit(false)
       return
     } else {
       $socket.emit('next-round-manual', { gameId: $currentGameId, ...question }, (response) => {
@@ -140,9 +141,8 @@
     <Textarea
       id="fullAnswer"
       bind:value={fullAnswer}
-      label="Doplňujúca odpoveď"
       placeholder="Zadajte doplňujúcu informáciu k odpovedi (nepovinné)"
-      rows="3"
+      rows={3}
       class="text-black"
     />
 
